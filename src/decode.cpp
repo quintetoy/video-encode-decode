@@ -2,7 +2,8 @@
 #define TEST_H264 1
 #define TEST_HEVC 0
 
-//输入，编解码上下文参数 AVCodecContext，需要解出的帧是frame和视频包packet，以及输出的文件
+//输入：编解码上下文参数 AVCodecContext，
+//输出：解出的帧是frame和视频包packet，以及输出的文件
 static void decode(AVCodecContext *dec_ctx,AVFrame *frame,AVPacket *pkt,FILE *fp_out){
     //调用系统的函数
     char buf[1024];
@@ -30,6 +31,7 @@ static void decode(AVCodecContext *dec_ctx,AVFrame *frame,AVPacket *pkt,FILE *fp
 
 
         //解码得到的是YUV的数据
+        //ffmpeg的YUV数据存储方式是平面的方式
         for(int i=0;i<frame->height;i++){
             fwrite(frame->data[0]+frame->linesize[0]*i,1,frame->width.fp_out);
 
@@ -49,9 +51,9 @@ static void decode(AVCodecContext *dec_ctx,AVFrame *frame,AVPacket *pkt,FILE *fp
 
 
 int main(int argc,char* argv[]){
-    AVCodec *pCodec;
-    AVCodecContext *pCodecCtx=NULL;
-    AVCodecParserContext *pCodecParserCtx=NULL;
+    AVCodec *pCodec;//解码器
+    AVCodecContext *pCodecCtx=NULL;//解码器上下文
+    AVCodecParserContext *pCodecParserCtx=NULL;//？
 
     FILE *fp_in;
     FILE *fp_out;
@@ -62,7 +64,7 @@ int main(int argc,char* argv[]){
     unsigned char *cur_ptr;
 
     int cur_size;
-    AVPacket packet;
+    AVPacket packet;//压缩包
     int ret,got_picture;
 
     int i=0;
@@ -71,7 +73,7 @@ int main(int argc,char* argv[]){
     enum AVCodecID codec_id=AV_CODEC_ID_HEVC;
     char filepath_in[]="bihbuckbunny_480*272.hevc";
 #elif TEST_H264
-    enum AVCodecID codec_id=AV_CODEC_ID_H264;
+    enum AVCodecID codec_id=AV_CODEC_ID_H264;//编码器的ID，可以根据ID找到相应的编码器
     char filepath_in[]="bigbuckbunny_480*272.h264";
 #else
     AVCodecID codec_id=AV_CODEC_ID_MPEG2VIDEO;
@@ -82,14 +84,14 @@ int main(int argc,char* argv[]){
     int first_time=1;
 
     //查找解码器
-    pCodec =avcodec_find_decoder(codec_id);
+    pCodec =avcodec_find_decoder(codec_id);//根据ID来获得解码器
     if(!pCodec){
         printf("Codec not found\n");
         return -1;
     }
 
 //为AVCodecContext分配内存并初始化
-pCodecCtx=avcodec_alloc_context3(pCodec);
+pCodecCtx=avcodec_alloc_context3(pCodec);//初始化相应的上下文
 if(!pCodecCtx){
     printf("Could not allocate video codec context\n");
     return -1;
@@ -124,11 +126,11 @@ if(!fp_out){
 }
 
 
-pFrame=av_frame_alloc();
-av_init_packet(&packet);
+pFrame=av_frame_alloc();//初始化frame
+av_init_packet(&packet);//初始化packet，设置一些参数。
 
 while(1){
-    cur_size=fread(in_buffer,1,in_buffer_size,fp_in);
+    cur_size=fread(in_buffer,1,in_buffer_size,fp_in);//将视频文件读入
     if(cur_size==0)
         break;
     cur_ptr=in_buffer;

@@ -110,7 +110,7 @@ static void video_decode_example(const char *outfilename,const char *filename){
     AVPacket packet;
     i = 0;
     //step 7:read frame
-    while (av_read_frame(pFormatCtx, &packet) >= 0)
+    while (av_read_frame(pFormatCtx, &packet) >= 0)//得到packet
     {
         int frameFinished = 0;
 		if (packet.stream_index == videoStream)			//处理视频

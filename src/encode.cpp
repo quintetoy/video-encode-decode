@@ -8,12 +8,14 @@
 #define TEST_H264 1
 #define TEST_HEVC 0
 
+//输入：frame，
+//输出：pkt？
 static void encode(AVCodecContext *enc_ctx,AVFrame *frame,AVPacket *pkt,FILE *outfile){
     int ret;
     if(frame)
         printf("Send frame %3"PRId64"\n", frame->pts);
     
-    ret=avcodec_send_frame(enc_ctx,frame);
+    ret=avcodec_send_frame(enc_ctx,frame);//将帧发送给编码器 对应于解码的avcodec_receive_frame
 
     if(ret<0){
         fprintf(stderr, "Error sending a frame for encoding\n");
@@ -21,7 +23,7 @@ static void encode(AVCodecContext *enc_ctx,AVFrame *frame,AVPacket *pkt,FILE *ou
     }
 
         while (ret >= 0) {
-        ret = avcodec_receive_packet(enc_ctx, pkt);
+        ret = avcodec_receive_packet(enc_ctx, pkt);//将编码后的帧存到packet中，对应于解码的avcodec_send_packet
         if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
             return;
         else if (ret < 0) {
@@ -30,8 +32,8 @@ static void encode(AVCodecContext *enc_ctx,AVFrame *frame,AVPacket *pkt,FILE *ou
         }
 
         printf("Write packet %3"PRId64" (size=%5d)\n", pkt->pts, pkt->size);
-        fwrite(pkt->data, 1, pkt->size, outfile);
-        av_packet_unref(pkt);
+        fwrite(pkt->data, 1, pkt->size, outfile);//将压缩后的数据包存储到文件中
+        av_packet_unref(pkt);//释放packet
     }
 
 }
@@ -66,11 +68,12 @@ int main(int argc,char* argv[]){
         printf("Codec not found\n");
         return -1;
     }
-    pCodecCtx = avcodec_alloc_context3(pCodec);
+    pCodecCtx = avcodec_alloc_context3(pCodec);//初始化编码器上下文
     if (!pCodecCtx) {
         printf("Could not allocate video codec context\n");
         return -1;
     }
+    //一些参数的赋值，有些基本的编码信息需要给出，例如图像的宽高
 
     pCodecCtx->bit_rate=400000;
     pCodecCtx->width=in_w;
