@@ -73,7 +73,9 @@ static int decode_packet(int *got_frame, int cached)
     *got_frame = 0;
 
     if (pkt.stream_index == video_stream_idx) {
-        /* decode video frame *///解码
+        /* decode video frame *///解码，得到一帧视频数据AVFrame
+        //从 FFmpeg 3.x 开始，avcodec_decode_video2 就被废弃了
+//        目前avcodec_decode_video2已经被废弃了，取而代之的是avcodec_send_packet和avcode_receive_frame，原始函数也是调用后面两个函数实现的
         ret = avcodec_decode_video2(video_dec_ctx, frame, got_frame, &pkt);
         if (ret < 0) {
             fprintf(stderr, "Error decoding video frame (%s)\n", av_err2str(ret));
@@ -154,6 +156,7 @@ static int decode_packet(int *got_frame, int cached)
 }
 
 //打开编解码器
+//输出:stream_idx,AVCodecContext dec_ctx
 static int open_codec_context(int *stream_idx,
                               AVCodecContext **dec_ctx, AVFormatContext *fmt_ctx, enum AVMediaType type)
 {
@@ -163,6 +166,23 @@ static int open_codec_context(int *stream_idx,
     AVDictionary *opts = NULL;//？这个是
 
     //获取音视频及字幕的流索引stream_index
+    //以前没有函数av_find_best_stream时，获取索引可以通过如下：
+//    for(i=0;i<is->pFormatCtx->nb_streams;i++){
+//        if(is->pFormatCtx->streams[i]->codec->codec_type==AVMEDIA_TYPE_VIDEO)
+//        {
+//            is->videoindex=i;
+//        }
+//        if(is->pFormatCtx->streams[i]->codec->codec_type==AVMEDIA_TYPE_AUDIO)
+//        {
+//            is->sndindex=i;
+//        }
+//    }
+    
+   
+    //函数定义
+//    int av_find_best_stream(AVFormatContext *ic, enum AVMediaType type, int wanted_stream_nb, int related_stream,
+//                            AVCodec **decoder_ret, int flags)
+    
     ret = av_find_best_stream(fmt_ctx, type, -1, -1, NULL, 0);
     if (ret < 0) {
         fprintf(stderr, "Could not find %s stream in input file '%s'\n",
@@ -188,7 +208,9 @@ static int open_codec_context(int *stream_idx,
             return AVERROR(ENOMEM);
         }
 
+        
         /* Copy codec parameters from input stream to output codec context */
+        //将流的相关参数拷贝到解码器context中
         if ((ret = avcodec_parameters_to_context(*dec_ctx, st->codecpar)) < 0) {
             fprintf(stderr, "Failed to copy %s codec parameters to decoder context\n",
                     av_get_media_type_string(type));
@@ -208,10 +230,13 @@ static int open_codec_context(int *stream_idx,
     return 0;
 }
 
+//从样本的格式中推测格式
 static int get_format_from_sample_fmt(const char **fmt,
                                       enum AVSampleFormat sample_fmt)
 {
     int i;
+    
+    //这段话是什么格式
     struct sample_fmt_entry {
         enum AVSampleFormat sample_fmt; const char *fmt_be, *fmt_le;
     } sample_fmt_entries[] = {
@@ -237,6 +262,7 @@ static int get_format_from_sample_fmt(const char **fmt,
     return -1;
 }
 
+//输入参数，是否refcount，src_filename,video_dst_filename,audio_dst_filenam,
 int main (int argc, char **argv)
 {
     int ret = 0, got_frame;
@@ -262,20 +288,25 @@ int main (int argc, char **argv)
     audio_dst_filename = argv[3];
 
     /* open input file, and allocate format context */
+    //avformat_open_input,初始化fmt_ctx的一些参数，得到AVInputformat，然后根据AVInputformat中一些函数，找到文件的封装格式，得到AVStream
     if (avformat_open_input(&fmt_ctx, src_filename, NULL, NULL) < 0) {
         fprintf(stderr, "Could not open source file %s\n", src_filename);
         exit(1);
     }
 
     /* retrieve stream information */
+    //读取一部分获取音视频的信息，找到解码器，打开解码器，读取一部分数据等
     if (avformat_find_stream_info(fmt_ctx, NULL) < 0) {
         fprintf(stderr, "Could not find stream information\n");
         exit(1);
     }
 
+    //已经知道了解码器，然后向下传递，得到解码器的上下文，查找视频流，赋值给video_dec_ctx
     if (open_codec_context(&video_stream_idx, &video_dec_ctx, fmt_ctx, AVMEDIA_TYPE_VIDEO) >= 0) {
+        //得到视频流
         video_stream = fmt_ctx->streams[video_stream_idx];
 
+        //打开输出文件
         video_dst_file = fopen(video_dst_filename, "wb");
         if (!video_dst_file) {
             fprintf(stderr, "Could not open destination file %s\n", video_dst_filename);
@@ -284,9 +315,11 @@ int main (int argc, char **argv)
         }
 
         /* allocate image where the decoded image will be put */
+        //将图像的部分参数初始化
         width = video_dec_ctx->width;
         height = video_dec_ctx->height;
         pix_fmt = video_dec_ctx->pix_fmt;
+        //初始化，分配图像内存，存储原始的视频
         ret = av_image_alloc(video_dst_data, video_dst_linesize,
                              width, height, pix_fmt, 1);
         if (ret < 0) {
@@ -296,6 +329,7 @@ int main (int argc, char **argv)
         video_dst_bufsize = ret;
     }
 
+    //查找音频流，另外初始化audio_dec_ctx
     if (open_codec_context(&audio_stream_idx, &audio_dec_ctx, fmt_ctx, AVMEDIA_TYPE_AUDIO) >= 0) {
         audio_stream = fmt_ctx->streams[audio_stream_idx];
         audio_dst_file = fopen(audio_dst_filename, "wb");
@@ -307,6 +341,9 @@ int main (int argc, char **argv)
     }
 
     /* dump input information to stderr */
+    //输出格式信息，用于调试
+//    <strong>void av_dump_format(AVFormatContext *ic,int index,const char *url,int is_output);</strong>
+ 
     av_dump_format(fmt_ctx, 0, src_filename, 0);
 
     if (!audio_stream && !video_stream) {
@@ -314,7 +351,8 @@ int main (int argc, char **argv)
         ret = 1;
         goto end;
     }
-
+    
+//解码后的frame的存储内存
     frame = av_frame_alloc();
     if (!frame) {
         fprintf(stderr, "Could not allocate frame\n");
@@ -323,6 +361,7 @@ int main (int argc, char **argv)
     }
 
     /* initialize packet, set data to NULL, let the demuxer fill it */
+    //初始化packet
     av_init_packet(&pkt);
     pkt.data = NULL;
     pkt.size = 0;
@@ -333,9 +372,12 @@ int main (int argc, char **argv)
         printf("Demuxing audio from file '%s' into '%s'\n", src_filename, audio_dst_filename);
 
     /* read frames from the file */
+    //从buffer中取数据，得到AVPacket，整体从fmt_ctx中获取，AVStream
+    //int av_read_frame(AVFormatContext *s, AVPacket *pkt);
     while (av_read_frame(fmt_ctx, &pkt) >= 0) {
         AVPacket orig_pkt = pkt;
         do {
+            //尝试解一段
             ret = decode_packet(&got_frame, 0);
             if (ret < 0)
                 break;
@@ -346,12 +388,14 @@ int main (int argc, char **argv)
     }
 
     /* flush cached frames */
+    //清空缓存并输出
     pkt.data = NULL;
     pkt.size = 0;
     do {
         decode_packet(&got_frame, 1);
     } while (got_frame);
 
+    //从容器取出成功
     printf("Demuxing succeeded.\n");
 
     if (video_stream) {

@@ -1,4 +1,12 @@
-# avcodec_decode_video2()
+# avcodec_decode_video2()，avcodec_send_packet
+
+从 FFmpeg 3.x 开始，avcodec_decode_video2 就被废弃了，取而代之的是 avcodec_send_packet 和 avcodec_receive_frame。
+
+<https://www.jianshu.com/p/82784951d5b2>
+
+其实avcodec_decode_video2也是调用这两个函数实现的
+
+
 
 <https://blog.csdn.net/leixiaohua1020/article/details/12679719>
 
