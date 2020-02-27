@@ -32,6 +32,7 @@
  * frames from the HW video surfaces.
  */
 
+
 #include <stdio.h>
 
 #include <libavcodec/avcodec.h>
@@ -46,6 +47,7 @@ static AVBufferRef *hw_device_ctx = NULL;
 static enum AVPixelFormat hw_pix_fmt;
 static FILE *output_file = NULL;
 
+//指定硬件并且初始化
 static int hw_decoder_init(AVCodecContext *ctx, const enum AVHWDeviceType type)
 {
     int err = 0;
@@ -55,11 +57,12 @@ static int hw_decoder_init(AVCodecContext *ctx, const enum AVHWDeviceType type)
         fprintf(stderr, "Failed to create specified HW device.\n");
         return err;
     }
-    ctx->hw_device_ctx = av_buffer_ref(hw_device_ctx);
+    ctx->hw_device_ctx = av_buffer_ref(hw_device_ctx);//引用，最后要unref
 
     return err;
 }
 
+//得到硬件上的像素类型
 static enum AVPixelFormat get_hw_format(AVCodecContext *ctx,
                                         const enum AVPixelFormat *pix_fmts)
 {
@@ -74,6 +77,7 @@ static enum AVPixelFormat get_hw_format(AVCodecContext *ctx,
     return AV_PIX_FMT_NONE;
 }
 
+//解码并存储数据
 static int decode_write(AVCodecContext *avctx, AVPacket *packet)
 {
     AVFrame *frame = NULL, *sw_frame = NULL;
@@ -82,6 +86,7 @@ static int decode_write(AVCodecContext *avctx, AVPacket *packet)
     int size;
     int ret = 0;
 
+    //常规的模式
     ret = avcodec_send_packet(avctx, packet);
     if (ret < 0) {
         fprintf(stderr, "Error during decoding\n");
@@ -105,8 +110,10 @@ static int decode_write(AVCodecContext *avctx, AVPacket *packet)
             goto fail;
         }
 
+        //得到的frame的格式
         if (frame->format == hw_pix_fmt) {
             /* retrieve data from GPU to CPU */
+            //把GPU的数据迁移到CPU上
             if ((ret = av_hwframe_transfer_data(sw_frame, frame, 0)) < 0) {
                 fprintf(stderr, "Error transferring the data to system memory\n");
                 goto fail;
@@ -184,6 +191,7 @@ int main(int argc, char *argv[])
     }
 
     /* find the video stream information */
+    //可以直接得到video_stream，即流信息和index ret
     ret = av_find_best_stream(input_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &decoder, 0);
     if (ret < 0) {
         fprintf(stderr, "Cannot find a video stream in the input file\n");

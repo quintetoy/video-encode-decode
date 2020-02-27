@@ -431,6 +431,10 @@ int main (int argc, char **argv)
 end:
     avcodec_free_context(&video_dec_ctx);
     avcodec_free_context(&audio_dec_ctx);
+    
+    //avformat_close_input的作用（1）调用AVInputFormat的read_close()方法关闭输入流
+    //（2）调用avformat_free_context()释放AVFormatContext
+    //（3）调用avio_close()关闭并且释放AVIOContext
     avformat_close_input(&fmt_ctx);
     if (video_dst_file)
         fclose(video_dst_file);

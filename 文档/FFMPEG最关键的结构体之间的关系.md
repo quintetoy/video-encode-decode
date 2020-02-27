@@ -72,7 +72,9 @@
 
 
 
+## 注意
 
+所以的结构体都要调用合适的函数初始化，但是目前需要调用销毁函数的结构体有3个。AVFormatContext,AVFrame，AVPacket
 
 
 
