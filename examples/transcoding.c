@@ -28,6 +28,7 @@
  * @example transcoding.c
  */
 
+//默认有多路流，而每一路流都对应一个filter，所以里面的结构体都是使用的数组
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavfilter/buffersink.h>
