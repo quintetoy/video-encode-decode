@@ -29,6 +29,12 @@
  */
 
 //默认有多路流，而每一路流都对应一个filter，所以里面的结构体都是使用的数组
+
+//没有查找有没有无效的流，当流中没有codecID时候，直接打印错误并返回，即没有使用streamIndex的方法。
+
+//而前面简单的实例中，find_best_stream
+
+//本例子主要实现解码--滤波--编码的一整套流程，相当于对Frame处理过一遍
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavfilter/buffersink.h>
@@ -38,10 +44,12 @@
 
 static AVFormatContext *ifmt_ctx;
 static AVFormatContext *ofmt_ctx;
+
+//这个结构体中的三个元素是必须的
 typedef struct FilteringContext {
     AVFilterContext *buffersink_ctx;
     AVFilterContext *buffersrc_ctx;
-    AVFilterGraph *filter_graph;
+    AVFilterGraph *filter_graph;//AVFilterGraph结构体中中含有AVFilterContext数组
 } FilteringContext;
 static FilteringContext *filter_ctx;
 
@@ -51,6 +59,7 @@ typedef struct StreamContext {
 } StreamContext;
 static StreamContext *stream_ctx;
 
+//打开输入文件
 static int open_input_file(const char *filename)
 {
     int ret;
@@ -109,6 +118,7 @@ static int open_input_file(const char *filename)
     return 0;
 }
 
+//打开输出文件，注意调用avformat_alloc_output_context2
 static int open_output_file(const char *filename)
 {
     AVStream *out_stream;
@@ -153,6 +163,8 @@ static int open_output_file(const char *filename)
             /* In this example, we transcode to same properties (picture size,
              * sample rate etc.). These properties can be changed for output
              * streams easily using filters */
+            
+            //tanscode中改变了一些特性，例如图片大小，采样率等
             if (dec_ctx->codec_type == AVMEDIA_TYPE_VIDEO) {
                 enc_ctx->height = dec_ctx->height;
                 enc_ctx->width = dec_ctx->width;
@@ -204,6 +216,7 @@ static int open_output_file(const char *filename)
         }
 
     }
+    
     av_dump_format(ofmt_ctx, 0, filename, 1);
 
     if (!(ofmt_ctx->oformat->flags & AVFMT_NOFILE)) {
@@ -224,6 +237,7 @@ static int open_output_file(const char *filename)
     return 0;
 }
 
+//初始化滤波器，形成滤波链，给FilteringContext结构体的元素赋初值
 static int init_filter(FilteringContext* fctx, AVCodecContext *dec_ctx,
         AVCodecContext *enc_ctx, const char *filter_spec)
 {
@@ -233,8 +247,8 @@ static int init_filter(FilteringContext* fctx, AVCodecContext *dec_ctx,
     const AVFilter *buffersink = NULL;
     AVFilterContext *buffersrc_ctx = NULL;
     AVFilterContext *buffersink_ctx = NULL;
-    AVFilterInOut *outputs = avfilter_inout_alloc();
-    AVFilterInOut *inputs  = avfilter_inout_alloc();
+    AVFilterInOut *outputs = avfilter_inout_alloc();//输出
+    AVFilterInOut *inputs  = avfilter_inout_alloc();//输入
     AVFilterGraph *filter_graph = avfilter_graph_alloc();
 
     if (!outputs || !inputs || !filter_graph) {
@@ -243,7 +257,7 @@ static int init_filter(FilteringContext* fctx, AVCodecContext *dec_ctx,
     }
 
     if (dec_ctx->codec_type == AVMEDIA_TYPE_VIDEO) {
-        buffersrc = avfilter_get_by_name("buffer");
+        buffersrc = avfilter_get_by_name("buffer");//依据名字初始化
         buffersink = avfilter_get_by_name("buffersink");
         if (!buffersrc || !buffersink) {
             av_log(NULL, AV_LOG_ERROR, "filtering source or sink element not found\n");
@@ -257,7 +271,7 @@ static int init_filter(FilteringContext* fctx, AVCodecContext *dec_ctx,
                 dec_ctx->time_base.num, dec_ctx->time_base.den,
                 dec_ctx->sample_aspect_ratio.num,
                 dec_ctx->sample_aspect_ratio.den);
-
+//创建图
         ret = avfilter_graph_create_filter(&buffersrc_ctx, buffersrc, "in",
                 args, NULL, filter_graph);
         if (ret < 0) {
@@ -325,7 +339,7 @@ static int init_filter(FilteringContext* fctx, AVCodecContext *dec_ctx,
             av_log(NULL, AV_LOG_ERROR, "Cannot set output channel layout\n");
             goto end;
         }
-
+//设置一些参数
         ret = av_opt_set_bin(buffersink_ctx, "sample_rates",
                 (uint8_t*)&enc_ctx->sample_rate, sizeof(enc_ctx->sample_rate),
                 AV_OPT_SEARCH_CHILDREN);
@@ -339,6 +353,8 @@ static int init_filter(FilteringContext* fctx, AVCodecContext *dec_ctx,
     }
 
     /* Endpoints for the filter graph. */
+    
+    
     outputs->name       = av_strdup("in");
     outputs->filter_ctx = buffersrc_ctx;
     outputs->pad_idx    = 0;
@@ -373,6 +389,7 @@ end:
     return ret;
 }
 
+//由于有多路流，所以借助上面的例子进行多路流的filter的初始化
 static int init_filters(void)
 {
     const char *filter_spec;
@@ -392,7 +409,7 @@ static int init_filters(void)
 
 
         if (ifmt_ctx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
-            filter_spec = "null"; /* passthrough (dummy) filter for video */
+            filter_spec = "null"; /* passthrough (dummy) filter for video *///指定一种滤波类型
         else
             filter_spec = "anull"; /* passthrough (dummy) filter for audio */
         ret = init_filter(&filter_ctx[i], stream_ctx[i].dec_ctx,
@@ -403,6 +420,7 @@ static int init_filters(void)
     return 0;
 }
 
+//将滤波后的Frame编码并写入封装 Frame(avcodec_encode_video2)-- packet(av_interleaved_write_frame)--stream
 static int encode_write_frame(AVFrame *filt_frame, unsigned int stream_index, int *got_frame) {
     int ret;
     int got_frame_local;
@@ -439,6 +457,7 @@ static int encode_write_frame(AVFrame *filt_frame, unsigned int stream_index, in
     return ret;
 }
 
+//滤波并编码，借助上面的函数
 static int filter_encode_write_frame(AVFrame *frame, unsigned int stream_index)
 {
     int ret;
@@ -446,6 +465,7 @@ static int filter_encode_write_frame(AVFrame *frame, unsigned int stream_index)
 
     av_log(NULL, AV_LOG_INFO, "Pushing decoded frame to filters\n");
     /* push the decoded frame into the filtergraph */
+    //添加滤波的图像
     ret = av_buffersrc_add_frame_flags(filter_ctx[stream_index].buffersrc_ctx,
             frame, 0);
     if (ret < 0) {
@@ -454,6 +474,7 @@ static int filter_encode_write_frame(AVFrame *frame, unsigned int stream_index)
     }
 
     /* pull filtered frames from the filtergraph */
+    
     while (1) {
         filt_frame = av_frame_alloc();
         if (!filt_frame) {
@@ -461,6 +482,7 @@ static int filter_encode_write_frame(AVFrame *frame, unsigned int stream_index)
             break;
         }
         av_log(NULL, AV_LOG_INFO, "Pulling filtered frame from filters\n");
+        //取出滤波的图像
         ret = av_buffersink_get_frame(filter_ctx[stream_index].buffersink_ctx,
                 filt_frame);
         if (ret < 0) {
@@ -483,6 +505,7 @@ static int filter_encode_write_frame(AVFrame *frame, unsigned int stream_index)
     return ret;
 }
 
+//清空编码器
 static int flush_encoder(unsigned int stream_index)
 {
     int ret;
@@ -542,11 +565,15 @@ int main(int argc, char **argv)
                 ret = AVERROR(ENOMEM);
                 break;
             }
+            //修改时间戳
             av_packet_rescale_ts(&packet,
                                  ifmt_ctx->streams[stream_index]->time_base,
                                  stream_ctx[stream_index].dec_ctx->time_base);
+            
+            //注意此函数的用法
             dec_func = (type == AVMEDIA_TYPE_VIDEO) ? avcodec_decode_video2 :
                 avcodec_decode_audio4;
+            
             ret = dec_func(stream_ctx[stream_index].dec_ctx, frame,
                     &got_frame, &packet);
             if (ret < 0) {
