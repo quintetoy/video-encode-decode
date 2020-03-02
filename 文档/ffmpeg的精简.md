@@ -57,6 +57,43 @@ Unknown option "--enable-memalign-hack".
 See ./configure --help for available options.
 ```
 
+编译的命令修改为
+
+```
+./configure --enable-shared --disable-static  --disable-encoders --disable-decoders --enable-decoder=h264 --enable-small --prefix=/home/xxx/videocode/ffmpeg-sdk
+make
+make install
+```
+
+最后得到的文件大小为
+
+```
+0	libavcodec.so
+0	libavcodec.so.58
+1.9M	libavcodec.so.58.35.100
+0	libavdevice.so
+0	libavdevice.so.58
+64K	libavdevice.so.58.5.100
+0	libavfilter.so
+0	libavfilter.so.7
+2.1M	libavfilter.so.7.40.101
+0	libavformat.so
+0	libavformat.so.58
+1.9M	libavformat.so.58.20.100
+0	libavutil.so
+0	libavutil.so.56
+284K	libavutil.so.56.22.100
+0	libswresample.so
+0	libswresample.so.3
+104K	libswresample.so.3.3.100
+0	libswscale.so
+0	libswscale.so.5
+436K	libswscale.so.5.3.100
+32K	pkgconfig
+```
+
+
+
 
 
 
