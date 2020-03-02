@@ -38,6 +38,7 @@
 #include <libavfilter/buffersrc.h>
 #include <libavutil/opt.h>
 
+//filter_descr字符串实现上述几种特效
 const char *filter_descr = "scale=78:24,transpose=cclock";
 /* other way:
    scale=78:24 [scl]; [scl] transpose=cclock // assumes "[in]" and "[out]" to be input output pads respectively
@@ -49,7 +50,7 @@ AVFilterContext *buffersink_ctx;
 AVFilterContext *buffersrc_ctx;
 AVFilterGraph *filter_graph;
 static int video_stream_index = -1;
-static int64_t last_pts = AV_NOPTS_VALUE;
+static int64_t last_pts = AV_NOPTS_VALUE;//部分情况下ffmpeg 解码出的帧会没有数据 pts值为AV_NOPTS_VALUE=-9223372036854775808
 
 static int open_input_file(const char *filename)
 {
@@ -89,6 +90,7 @@ static int open_input_file(const char *filename)
     return 0;
 }
 
+//输入是特效字符串，表示初始化哪种功能的滤波器
 static int init_filters(const char *filters_descr)
 {
     char args[512];
@@ -146,6 +148,26 @@ static int init_filters(const char *filters_descr)
      * filter input label is not specified, it is set to "in" by
      * default.
      */
+    
+    //buffer源输出必须和第一个滤波器连接，由于没有指定，所以就赋值为in
+    //源入，
+    
+//    typedef struct AVFilterInOut {
+//        /** unique name for this input/output in the list */
+//        char *name;
+//
+//        /** filter context associated to this input/output */
+//        AVFilterContext *filter_ctx;
+//
+//        /** index of the filt_ctx pad to use for linking */
+//        int pad_idx;
+//
+//        /** next input/input in the list, NULL if this is the last */
+//        struct AVFilterInOut *next;
+//    } AVFilterInOut;
+    
+    
+    
     outputs->name       = av_strdup("in");
     outputs->filter_ctx = buffersrc_ctx;
     outputs->pad_idx    = 0;
@@ -157,11 +179,38 @@ static int init_filters(const char *filters_descr)
      * filter output label is not specified, it is set to "out" by
      * default.
      */
+    
+    //sink输入必须和最后一个滤波器的pad相连
+    //滤波输出
     inputs->name       = av_strdup("out");
     inputs->filter_ctx = buffersink_ctx;
     inputs->pad_idx    = 0;
     inputs->next       = NULL;
 
+    
+    //最后会形成一条滤波链，  以及要实现的特效
+    //函数声明
+//    * In the graph filters description, if the input label of the first
+//        * filter is not specified, "in" is assumed; if the output label of
+//            * the last filter is not specified, "out" is assumed.
+//            *
+//            * @param graph   the filter graph where to link the parsed graph context
+//            * @param filters string to be parsed
+//            * @param inputs  pointer to a linked list to the inputs of the graph, may be NULL.
+//            *                If non-NULL, *inputs is updated to contain the list of open inputs
+//            *                after the parsing, should be freed with avfilter_inout_free().
+//            * @param outputs pointer to a linked list to the outputs of the graph, may be NULL.
+//            *                If non-NULL, *outputs is updated to contain the list of open outputs
+//            *                after the parsing, should be freed with avfilter_inout_free().
+//            * @return non negative on success, a negative AVERROR code on error
+//            */
+//            int avfilter_graph_parse_ptr(AVFilterGraph *graph, const char *filters,
+//                                         AVFilterInOut **inputs, AVFilterInOut **outputs,
+//                                         void *log_ctx);
+    
+    
+
+    
     if ((ret = avfilter_graph_parse_ptr(filter_graph, filters_descr,
                                     &inputs, &outputs, NULL)) < 0)
         goto end;
