@@ -1,4 +1,4 @@
-# ffmpeg官方文档
+# ffmpeg官方文档及编译
 
 <https://ffmpeg.org/doxygen/4.1/modules.html>
 
@@ -98,9 +98,7 @@ int main (int argc, char **argv)
 
 ```
  g++ -std=c++11  -o main main.cpp -I/home/xxx/videocode/examples/include -L/home/xxx/videocode/examples/lib -lavformat -lavutil
-
-#使用时的命令
- ./main /home/ouyaxxxeocode/video/IMG_6543.MP4
+ 
 ```
 
 

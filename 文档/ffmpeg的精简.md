@@ -1,5 +1,9 @@
 # ffmpeg的精简
 
+[TOC]
+
+
+
 参考博客
 
 <https://blog.csdn.net/seven407/article/details/6170823>
@@ -57,7 +61,7 @@ Unknown option "--enable-memalign-hack".
 See ./configure --help for available options.
 ```
 
-编译的命令修改为
+### ffmpeg服务器验证编译的命令修改为（成功）
 
 ```
 ./configure --enable-shared --disable-static  --disable-encoders --disable-decoders --enable-decoder=h264 --enable-small --prefix=/home/xxx/videocode/ffmpeg-sdk
@@ -91,6 +95,18 @@ make install
 436K	libswscale.so.5.3.100
 32K	pkgconfig
 ```
+
+
+
+#### 验证共享库是否可用
+
+ffmpeg自带了一个examples的文件夹，其中metadata.c文件可以拷贝出来作为验证例子使用
+
+```
+g++ -std=c++11  -o main main.cpp -I/home/xxx/videocode/examples/include -L/home/xxx/videocode/examples/lib -lavformat -lavutil
+```
+
+
 
 
 
@@ -741,7 +757,7 @@ h264_nvenc		   mp2
 
 
 
-## 精简版ffmpeg编译脚本
+## 精简版ffmpeg编译脚本(参考)
 
 
 
