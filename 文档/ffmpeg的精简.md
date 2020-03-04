@@ -837,6 +837,14 @@ build_one
 
 
 
+#### 正常安装
+
+```
+./configure --enable-shared --prefix=/home/ouyangy/videocode/ffmpeg-sdk-all/
+```
+
+
+
 
 
 
