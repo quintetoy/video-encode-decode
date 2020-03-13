@@ -571,6 +571,8 @@ int main(int argc, char **argv)
                                  stream_ctx[stream_index].dec_ctx->time_base);
             
             //注意此函数的用法
+            //avcodec_decode_video2已经废弃了，取而代之的是avcodec_send_packet,avcodec_receive_frame
+            
             dec_func = (type == AVMEDIA_TYPE_VIDEO) ? avcodec_decode_video2 :
                 avcodec_decode_audio4;
             
