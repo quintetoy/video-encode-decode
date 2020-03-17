@@ -1,3 +1,5 @@
+
+
 # ffmpeg的精简
 
 [TOC]
@@ -101,6 +103,13 @@ make install
 #### 验证共享库是否可用
 
 ffmpeg自带了一个examples的文件夹，其中metadata.c文件可以拷贝出来作为验证例子使用
+
+```
+注意要把库的相关路径添加进去
+export LD_LIBRARY_PATH=/home/xxx/ffmpeg-sdk/lib:$LD_LIBRARY_PATH
+```
+
+
 
 ```
 g++ -std=c++11  -o main main.cpp -I/home/xxx/videocode/examples/include -L/home/xxx/videocode/examples/lib -lavformat -lavutil
@@ -849,17 +858,125 @@ build_one
 
 
 
+## 为了常见的库的自适应
+
+```
+./configure --PREFIX=/home/ouyangy/ffmpegsdk --enable-shared 
+	--enable-static 
+	--disable-doc 
+	--enable-small 
+	--disable-ffmpeg 
+	--disable-ffplay 
+	--disable-ffprobe 
+	--disable-ffserver 
+	--disable-debug 
+	--disable-avdevice 
+	--disable-indevs 
+	--disable-outdevs 
+	--disable-avresample 
+  --disable-demuxers 
+  --enable-demuxer=aac 
+  --enable-demuxer=flv 
+  --enable-demuxer=h264 
+  --enable-demuxer=mov 
+  --enable-demuxer=mp4 
+  --enable-demuxer=hls 
+  --enable-demuxer=avi 
+  --enable-demuxer=mpegts 
+  --enable-demuxer=hevc 
+  --enable-demuxer=matroska   
+   --disable-protocol=applehttp 
+   --enable-protocol=tcp 
+   --enable-protocol=udp 
+   --enable-protocol=file 
+   --enable-protocol=http 
+   --enable-protocol=hls 
+   --enable-protocol=rtmp 
+    --disable-decoders 
+    --enable-decoder=h264 
+    --enable-decoder=h264_cuvid 
+    --enable-decoder=h264_qsv
+    --enable-decoder=flv
+    --enable-decoder=hevc
+  --disable-encoders 
+  --enable-encoder=libx264
+  --enable-encoder=h264_nvenc
+  --enable-encoder=h264_qsv
+  --enable-encoder=libx265
+  --enable-encoder=flv 
+  --enable-parsers
+  
+  
+  --disable-parsers 
+  --enable-parser=aac 
+  --enable-parser=h264 \
+  --enable-parser=mpeg4video \
+  --enable-parser=mpegvideo 
+  
+  
+ 
+```
 
 
 
 
 
+## 命令行输入
 
 
 
+**动态库**
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdkshared --enable-shared  --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm
+
+
+```
+
+**静态库**
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdk --enable-static --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm
+```
 
 
 
+**下载libx264并编译**
+
+```
+下载地址：
+https://www.videolan.org/developers/x264.html
+
+./configure --enable-static --enable-shared --prefix=/home/xxx/x264sdk --disable-asm
+
+```
+
+
+
+参考博客
+
+<https://www.cnblogs.com/wanggang123/p/8660435.html>
+
+```
+这两句命令必不可少
+--enable-libx264 --enable-gpl
+
+
+```
+
+
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdkshare264 --enable-shared --extra-cflags="-I/home/ouyangy/videocode/x264sdk/include" --extra-ldflags="-L/home/ouyangy/videocode/x264sdk/lib" --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm --enable-libx264 --enable-gpl
+```
+
+
+
+在以上命令执行完毕以后，会在external libraries：下面出现libx264,
+
+
+
+Find_encoder_by_name函数调用时，需要输入解码器的名字，此时应该输入libx264
 
 
 
