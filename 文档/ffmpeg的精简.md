@@ -1192,7 +1192,7 @@ ERROR: cuvid requested, but not all dependencies are satisfied: ffnvcodec
 即最后的命令为
 
 ```
-PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --enable-libx264
 ```
 
 
@@ -1212,3 +1212,14 @@ avcodec			  avfilter		    avutil		      swresample		swscale
 avdevice		  avformat
 ```
 
+
+
+
+
+**下一步将libx264和nvidia的硬件编解码统一编码到一个sdk中去**
+
+```
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --enable-libx264 --enable-gpl
+```
+
+注意此时不需要设置libx264 ，源码安装的时候，已经将其安装到和ffnvcodec的同一个路径下了。
