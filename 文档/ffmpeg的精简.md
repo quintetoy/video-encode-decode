@@ -980,3 +980,235 @@ Find_encoder_by_name函数调用时，需要输入解码器的名字，此时应
 
 
 
+**nvidia显卡编解码加速**
+
+```
+./configure --prefix=../build_out_cuda --enable-shared \
+--enable-cuda --enable-cuvid --enable-nvenc --enable-nonfree --enable-libnpp \
+--extra-cflags=-I/d/programfiles/Video_Codec_SDK_9.0.20/Video_Codec_SDK_9.0.20/include \
+--extra-ldflags=-L/d/programfiles/Video_Codec_SDK_9.0.20/Video_Codec_SDK_9.0.20/Lib/x64
+```
+
+Nvidia 视频编解码的sdk下载网址：<https://developer.nvidia.com/nvidia-video-codec-sdk/download>
+
+最终的编译命令为1.0
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared  --extra-cflags="-I/home/ouyangy/223/app/Video_Codec_SDK_9.1.23/include " --extra-ldflags="-L/home/ouyangy/223/app/Video_Codec_SDK_9.1.23/lib/linux/stubs/x86_64 " --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders  --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm  --enable-gpl  --enable-encoder=libx264 --enable-cuvid --enable-nonfree --enable-cuda 
+```
+
+2.0
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared  --extra-cflags="-I//usr/local/cuda/include" --extra-ldflags="-L//usr/local/cuda/lib" --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders  --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm  --enable-gpl  --enable-encoder=libx264 --enable-cuvid --enable-nonfree --enable-cuda --enable-hwaccels
+```
+
+
+
+
+
+
+
+
+
+**报错**
+
+```
+If gcc is a cross-compiler, use the --enable-cross-compile option.
+Only do this if you know what cross compiling means.
+C compiler test failed.
+```
+
+**报错**
+
+<https://blog.csdn.net/e_Inch_Photo/article/details/81206429?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task>
+
+```
+需要同时编译且包含libx264,和nvidia的硬件加速编码功能
+```
+
+**报错**
+
+```
+http://www.voidcn.com/article/p-cttaddaf-brr.html
+ERROR: cuda requested, but not all dependencies are satisfied: ffnvcodec
+```
+
+```
+https://blog.csdn.net/Tosonw/article/details/90178195
+
+执行以下命令
+git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
+cd nv-codec-headers
+sudo make 
+sudo make install
+```
+
+**ffmpeg编译过程中的一些常见错误**
+
+<https://www.it399.com/blog/ffmpeg/201807011707>
+
+#### 一、`ffmpeg: error while loading shared libraries: libmp3lame.so.0: cannot open shared object file: No such file or directory`
+
+ffmpeg默认安装目录为“/usr/local/lib”，有些64位系统下软件目录则为“/usr/lib64”，编译过程中可能会出现“ffmpeg: error while loading shared libraries: libmp3lame.so.0: cannot open shared object file: No such file or directory”等类似的错误，解决办法是建立软链接或者移动库文件到相应的目录：
+
+**解决办法：**
+`ln -s /usr/local/lib/libmp3lame.so.0.0.0 /usr/lib64/libmp3lame.so.0`
+`mv /usr/local/lib/libmp3lame.so.0.0.0 /usr/lib64/libmp3lame.so.0`
+
+#### 二、`ffmpeg: error while loading shared libraries: libx264.so.155: cannot open shared object file: No such file or directory`
+
+**解决方法：编辑ld.so.conf添加/usr/local/x264/lib**
+
+```
+vi /etc/ld.so.conf输入i进入编辑插入/usr/local/x264/lib再按esc再按:wq保存退出执行 ldconfig是配置生效
+```
+
+
+
+
+
+**安装过程中的常见事项**
+
+> 注意:不指定prefix，则可执行文件默认放在/usr /local/[bin](https://www.baidu.com/s?wd=bin&tn=SE_PcZhidaonwhc_ngpagmjz&rsv_dl=gh_pc_zhidao)，库文件默认放在/usr/local/lib，配置文件默认放在/usr/local/etc。其它的资源文件放在/usr /local/share。
+
+这次因为我们在安装ffmpeg的时候没有指定prefix，那么ffmpeg安装的路径就是上面的那样。如果安装的时候想要指定目录/usr/local/ffmpeg，可以`./configure --enable-gpl --enable-libx264 --enable-libmp3lame --prefix=/usr/local/ffmpeg`
+
+
+
+
+
+
+
+**编译的基础环境需要的有**
+
+<https://www.jianshu.com/p/532e502aeab8>
+
+需要基础的linux环境：ubuntu或者centos
+
+显卡：nvidia GeForce **
+
+显卡驱动：NVIDIA-Linux-x86_64-440.33.01.run
+
+CUDA：cuda_10.0.130_410.48_linux
+
+Video Codec SDK:Video_Codec_SDK_9.1.23
+
+
+
+
+
+安装驱动：
+
+```
+./NVIDIA-Linux-x86_64-440.33.01.run
+#卸载
+/usr/bin/nvidia-uninstall
+
+
+
+#cuda安装及卸载
+sh cuda_10.0.130_410.48_linux //这句命令的效果存疑
+
+#卸载cuda ToolKit
+sudo /usr/local/cuda-9.0/bin/uninstall_cuda_9.0.pl //参考命令
+
+
+
+```
+
+
+
+**环境准备好以后，下载相关的**ffnvcodec
+
+```
+//官方的下载地址
+https://github.com/FFmpeg/nv-codec-headers
+
+//运行命令
+git clone https://github.com/FFmpeg/nv-codec-headers
+cd nv-codec-headers
+make
+make install
+
+//官方注释，当前下载对应的是Video Codec SDK version 9.1.23.
+```
+
+要么不指定prefix，要么将结果拷贝过去
+
+make执行了生成ffnvcodec.pc然后把ffnvcodec.pc和`include/ffnvcodec`拷贝到了`/usr/local/lib/pkgconfig`目录和`usr/local/inlucde`目录的工作。
+
+
+
+
+
+**安装完毕以后，需要将当前的环境编译进去**
+
+```
+Minimum required driver versions:
+Linux: 435.21 or newer
+```
+
+
+
+从目前的准备工作来看，需要重新安装显卡，驱动等等
+
+所有版本的nv-codec-headers的下载网址
+
+<https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git;a=summary>
+
+尝试用简单的命令来验证结果，行不通，和前面报一样的错，所以需要找到对应的cuda对应的版本
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/home/ouyangy/223/app/Video_Codec_SDK_9.1.23/include --extra-ldflags=-L/home/ouyangy/223/app/Video_Codec_SDK_9.1.23/lib/linux/stubs/x86_64 --disable-x86asm
+```
+
+
+
+nvidia官方指导文档
+
+<https://developer.nvidia.com/ffmpeg>
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda-sdk --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm
+```
+
+老版的sdk下载地址
+
+<https://developer.nvidia.com/nvidia-video-codec-sdk/download>
+
+**新增报错**
+
+```
+ERROR: cuvid requested, but not all dependencies are satisfied: ffnvcodec
+```
+
+**总结报错原因**
+
+<https://blog.csdn.net/wxf306989618/article/details/83658066>
+
+需要在运行前面加上**PKG_CONFIG_PATH=/usr/local/lib/pkgconfig**
+
+即最后的命令为
+
+```
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm
+```
+
+
+
+部分输出结果如下所示：
+
+```
+External libraries:
+bzlib			  libxcb		    libxcb_shm		      lzma			zlib
+iconv			  libxcb_shape		    libxcb_xfixes
+
+External libraries providing hardware acceleration:
+cuda			  cuvid			    ffnvcodec		      nvdec			nvenc
+
+Libraries:
+avcodec			  avfilter		    avutil		      swresample		swscale
+avdevice		  avformat
+```
+
