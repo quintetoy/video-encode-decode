@@ -1218,8 +1218,141 @@ avdevice		  avformat
 
 **下一步将libx264和nvidia的硬件编解码统一编码到一个sdk中去**
 
+
+
 ```
 PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --enable-libx264 --enable-gpl
 ```
 
 注意此时不需要设置libx264 ，源码安装的时候，已经将其安装到和ffnvcodec的同一个路径下了。
+
+```
+经验证可以成功调用
+```
+
+```
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm --enable-libx264 --enable-gpl
+```
+
+调用动态库的时候，需要将相应的包的路径包含进去
+
+```
+例如：
+export LD_LIBRARY_PATH=/home/ouyangy/videocode/x264sdk/lib:$LD_LIBRARY_PATH
+
+```
+
+
+
+安装编译的时候会出现
+
+```
+Enabled decoders:
+flv			  h264_cuvid		    mpeg1video		      vc1
+h263			  hevc			    mpeg2video		      vp8
+h264			  mjpeg			    mpeg4		      vp9
+
+Enabled encoders:
+flv			  h263			    h264_nvenc		      libx264
+
+External libraries:
+bzlib			  libxcb		    libxcb_shm		      lzma
+iconv			  libxcb_shape		    libxcb_xfixes	      zlib
+libx264
+
+External libraries providing hardware acceleration:
+cuda			  ffnvcodec		    nvdec		      nvenc
+cuvid
+
+Libraries:
+avcodec			  avformat		    postproc		      swscale
+avfilter		  avutil		    swresample
+
+Programs:
+
+Enabled decoders:
+flv			  h264_cuvid		    mpeg1video		      vc1
+h263			  hevc			    mpeg2video		      vp8
+h264			  mjpeg			    mpeg4		      vp9
+
+Enabled encoders:
+flv			  h263			    h264_nvenc		      libx264
+
+Enabled hwaccels:
+h264_nvdec		  mpeg1_nvdec		    vc1_nvdec		      vp9_nvdec
+hevc_nvdec		  mpeg2_nvdec		    vp8_nvdec		      wmv3_nvdec
+mjpeg_nvdec		  mpeg4_nvdec
+
+Enabled parsers:
+aac			  dnxhd			    h264		      rv40
+aac_latm		  dpx			    hevc		      sbc
+ac3			  dvaudio		    mjpeg		      sipr
+adx			  dvbsub		    mlp			      tak
+av1			  dvd_nav		    mpeg4video		      vc1
+avs2			  dvdsub		    mpegaudio		      vorbis
+bmp			  flac			    mpegvideo		      vp3
+cavsvideo		  g729			    opus		      vp8
+cook			  gsm			    png			      vp9
+dca			  h261			    pnm			      xma
+dirac			  h263			    rv30
+
+Enabled demuxers:
+aac			  h264			    hls			      mov
+avi			  hevc			    matroska		      mpegts
+flv
+
+Enabled muxers:
+a64			  framemd5		    mpeg1video		      rm
+ac3			  g722			    mpeg2dvd		      roq
+adts			  g723_1		    mpeg2svcd		      rso
+adx			  g726			    mpeg2video		      rtp
+aiff			  g726le		    mpeg2vob		      rtp_mpegts
+amr			  gif			    mpegts		      rtsp
+apng			  gsm			    mpjpeg		      sap
+aptx			  gxf			    mxf			      sbc
+aptx_hd			  h261			    mxf_d10		      scc
+asf			  h263			    mxf_opatom		      segafilm
+asf_stream		  h264			    null		      segment
+ass			  hash			    nut			      singlejpeg
+ast			  hds			    oga			      smjpeg
+au			  hevc			    ogg			      smoothstreaming
+avi			  hls			    ogv			      sox
+avm2			  ico			    oma			      spdif
+avs2			  ilbc			    opus		      spx
+bit			  image2		    pcm_alaw		      srt
+caf			  image2pipe		    pcm_f32be		      stream_segment
+cavsvideo		  ipod			    pcm_f32le		      sup
+codec2			  ircam			    pcm_f64be		      swf
+codec2raw		  ismv			    pcm_f64le		      tee
+crc			  ivf			    pcm_mulaw		      tg2
+dash			  jacosub		    pcm_s16be		      tgp
+data			  latm			    pcm_s16le		      truehd
+daud			  lrc			    pcm_s24be		      tta
+dirac			  m4v			    pcm_s24le		      uncodedframecrc
+dnxhd			  matroska		    pcm_s32be		      vc1
+dts			  matroska_audio	    pcm_s32le		      vc1t
+dv			  md5			    pcm_s8		      voc
+eac3			  microdvd		    pcm_u16be		      w64
+f4v			  mjpeg			    pcm_u16le		      wav
+ffmetadata		  mkvtimestamp_v2	    pcm_u24be		      webm
+fifo			  mlp			    pcm_u24le		      webm_chunk
+fifo_test		  mmf			    pcm_u32be		      webm_dash_manifest
+filmstrip		  mov			    pcm_u32le		      webp
+fits			  mp2			    pcm_u8		      webvtt
+flac			  mp3			    pcm_vidc		      wtv
+flv			  mp4			    psp			      wv
+framecrc		  mpeg1system		    rawvideo		      yuv4mpegpipe
+framehash		  mpeg1vcd
+
+Enabled protocols:
+async			  ftp			    mmsh		      srtp
+cache			  gopher		    mmst		      subfile
+concat			  hls			    pipe		      tcp
+crypto			  http			    prompeg		      tee
+data			  httpproxy		    rtmp		      udp
+ffrtmphttp		  icecast		    rtmpt		      udplite
+file			  md5			    rtp			      unix
+
+
+```
+
