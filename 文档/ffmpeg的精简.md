@@ -861,7 +861,7 @@ build_one
 ## 为了常见的库的自适应
 
 ```
-./configure --PREFIX=/home/ouyangy/ffmpegsdk --enable-shared 
+./configure --PREFIX=/home/xxx/ffmpegsdk --enable-shared 
 	--enable-static 
 	--disable-doc 
 	--enable-small 
@@ -928,7 +928,7 @@ build_one
 **动态库**
 
 ```
-./configure --prefix=/home/ouyangy/ffmpegsdkshared --enable-shared  --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm
+./configure --prefix=/home/xxx/ffmpegsdkshared --enable-shared  --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm
 
 
 ```
@@ -936,7 +936,7 @@ build_one
 **静态库**
 
 ```
-./configure --prefix=/home/ouyangy/ffmpegsdk --enable-static --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm
+./configure --prefix=/home/xxx/ffmpegsdk --enable-static --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm
 ```
 
 
@@ -967,8 +967,113 @@ https://www.videolan.org/developers/x264.html
 
 
 ```
-./configure --prefix=/home/ouyangy/ffmpegsdkshare264 --enable-shared --extra-cflags="-I/home/ouyangy/videocode/x264sdk/include" --extra-ldflags="-L/home/ouyangy/videocode/x264sdk/lib" --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm --enable-libx264 --enable-gpl
+./configure --prefix=/home/xxx/ffmpegsdkshare264 --enable-shared --extra-cflags="-I/home/xxx/videocode/x264sdk/include" --extra-ldflags="-L/home/xxx/videocode/x264sdk/lib" --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska  --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm --enable-libx264 --enable-gpl 
 ```
+
+
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdkshare264 --enable-shared --extra-cflags="-I/home/ouyangy/videocode/x264sdk/include" --extra-ldflags="-L/home/ouyangy/videocode/x264sdk/lib" --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska  --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm --enable-libx264 --enable-gpl --enable-demuxer=rtsp --enable-decoder=libx264
+```
+
+```
+External libraries:
+bzlib			  libx264		    libxcb_shape	      libxcb_xfixes		zlib
+iconv			  libxcb		    libxcb_shm		      lzma
+
+External libraries providing hardware acceleration:
+
+Libraries:
+avcodec			  avformat		    postproc		      swresample		swscale
+avfilter		  avutil
+
+Programs:
+
+Enabled decoders:
+flv			  h263			    h264		      hevc
+
+Enabled encoders:
+flv			  h263			    libx264
+
+Enabled hwaccels:
+
+Enabled parsers:
+aac			  dca			    g729		      mpegaudio			sipr
+aac_latm		  dirac			    gsm			      mpegvideo			tak
+ac3			  dnxhd			    h261		      opus			vc1
+adx			  dpx			    h263		      png			vorbis
+av1			  dvaudio		    h264		      pnm			vp3
+avs2			  dvbsub		    hevc		      rv30			vp8
+bmp			  dvd_nav		    mjpeg		      rv40			vp9
+cavsvideo		  dvdsub		    mlp			      sbc			xma
+cook			  flac			    mpeg4video
+
+Enabled demuxers:
+aac			  flv			    hls			      mov			rm
+asf			  h264			    matroska		      mpegts			rtsp
+avi			  hevc
+
+Enabled muxers:
+a64			  fifo			    lrc			      opus			scc
+ac3			  fifo_test		    m4v			      pcm_alaw			segafilm
+adts			  filmstrip		    matroska		      pcm_f32be			segment
+adx			  fits			    matroska_audio	      pcm_f32le			singlejpeg
+aiff			  flac			    md5			      pcm_f64be			smjpeg
+amr			  flv			    microdvd		      pcm_f64le			smoothstreaming
+apng			  framecrc		    mjpeg		      pcm_mulaw			sox
+aptx			  framehash		    mkvtimestamp_v2	      pcm_s16be			spdif
+aptx_hd			  framemd5		    mlp			      pcm_s16le			spx
+asf			  g722			    mmf			      pcm_s24be			srt
+asf_stream		  g723_1		    mov			      pcm_s24le			stream_segment
+ass			  g726			    mp2			      pcm_s32be			sup
+ast			  g726le		    mp3			      pcm_s32le			swf
+au			  gif			    mp4			      pcm_s8			tee
+avi			  gsm			    mpeg1system		      pcm_u16be			tg2
+avm2			  gxf			    mpeg1vcd		      pcm_u16le			tgp
+avs2			  h261			    mpeg1video		      pcm_u24be			truehd
+bit			  h263			    mpeg2dvd		      pcm_u24le			tta
+caf			  h264			    mpeg2svcd		      pcm_u32be			uncodedframecrc
+cavsvideo		  hash			    mpeg2video		      pcm_u32le			vc1
+codec2			  hds			    mpeg2vob		      pcm_u8			vc1t
+codec2raw		  hevc			    mpegts		      pcm_vidc			voc
+crc			  hls			    mpjpeg		      psp			w64
+dash			  ico			    mxf			      rawvideo			wav
+data			  ilbc			    mxf_d10		      rm			webm
+daud			  image2		    mxf_opatom		      roq			webm_chunk
+dirac			  image2pipe		    null		      rso			webm_dash_manifest
+dnxhd			  ipod			    nut			      rtp			webp
+dts			  ircam			    oga			      rtp_mpegts		webvtt
+dv			  ismv			    ogg			      rtsp			wtv
+eac3			  ivf			    ogv			      sap			wv
+f4v			  jacosub		    oma			      sbc			yuv4mpegpipe
+ffmetadata		  latm
+
+Enabled protocols:
+async			  file			    icecast		      rtmp			tcp
+cache			  ftp			    md5			      rtmpt			tee
+concat			  gopher		    mmsh		      rtp			udp
+crypto			  hls			    mmst		      srtp			udplite
+data			  http			    pipe		      subfile			unix
+ffrtmphttp		  httpproxy		    prompeg
+```
+
+
+
+出现网络流无法调用的问题，解决尝试方法
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdkshare264 --enable-shared --extra-cflags="-I/home/ouyangy/videocode/x264sdk/include" --extra-ldflags="-L/home/ouyangy/videocode/x264sdk/lib" --disable-doc  --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug  --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska  --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm --enable-libx264 --enable-gpl --enable-demuxer=rtsp --enable-demuxer=sdp  --disable-protocols --enable-network --enable-demuxer=rtsp
+```
+
+先添加一部分命令，然后删除一部分命令 --enable-small --disable-avdevice --disable-indevs --disable-outdevs --enable-small
+
+```
+./configure --prefix=/home/ouyangy/ffmpegsdkshare264 --enable-shared --extra-cflags="-I/home/ouyangy/videocode/x264sdk/include" --extra-ldflags="-L/home/ouyangy/videocode/x264sdk/lib" --disable-doc  --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-x86asm --enable-network --disable-protocols --enable-protocol=tcp --disable-demuxers --enable-demuxer=rtsp --disable-decoders --enable-decoder=h264  --enable-libx264 --enable-gpl
+```
+
+
+
+
 
 
 
@@ -994,13 +1099,13 @@ Nvidia 视频编解码的sdk下载网址：<https://developer.nvidia.com/nvidia-
 最终的编译命令为1.0
 
 ```
-./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared  --extra-cflags="-I/home/ouyangy/223/app/Video_Codec_SDK_9.1.23/include " --extra-ldflags="-L/home/ouyangy/223/app/Video_Codec_SDK_9.1.23/lib/linux/stubs/x86_64 " --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders  --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm  --enable-gpl  --enable-encoder=libx264 --enable-cuvid --enable-nonfree --enable-cuda 
+./configure --prefix=/home/xxx/ffmpegsdknvidia --enable-shared  --extra-cflags="-I/home/xxx/223/app/Video_Codec_SDK_9.1.23/include " --extra-ldflags="-L/home/xxx/223/app/Video_Codec_SDK_9.1.23/lib/linux/stubs/x86_64 " --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders  --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm  --enable-gpl  --enable-encoder=libx264 --enable-cuvid --enable-nonfree --enable-cuda 
 ```
 
 2.0
 
 ```
-./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared  --extra-cflags="-I//usr/local/cuda/include" --extra-ldflags="-L//usr/local/cuda/lib" --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders  --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm  --enable-gpl  --enable-encoder=libx264 --enable-cuvid --enable-nonfree --enable-cuda --enable-hwaccels
+./configure --prefix=/home/xxx/ffmpegsdknvidia --enable-shared  --extra-cflags="-I//usr/local/cuda/include" --extra-ldflags="-L//usr/local/cuda/lib" --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders  --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm  --enable-gpl  --enable-encoder=libx264 --enable-cuvid --enable-nonfree --enable-cuda --enable-hwaccels
 ```
 
 
@@ -1160,7 +1265,7 @@ Linux: 435.21 or newer
 尝试用简单的命令来验证结果，行不通，和前面报一样的错，所以需要找到对应的cuda对应的版本
 
 ```
-./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/home/ouyangy/223/app/Video_Codec_SDK_9.1.23/include --extra-ldflags=-L/home/ouyangy/223/app/Video_Codec_SDK_9.1.23/lib/linux/stubs/x86_64 --disable-x86asm
+./configure --prefix=/home/xxx/ffmpegsdknvidia --enable-shared --enable-cuda --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/home/xxx/223/app/Video_Codec_SDK_9.1.23/include --extra-ldflags=-L/home/xxx/223/app/Video_Codec_SDK_9.1.23/lib/linux/stubs/x86_64 --disable-x86asm
 ```
 
 
@@ -1170,7 +1275,7 @@ nvidia官方指导文档
 <https://developer.nvidia.com/ffmpeg>
 
 ```
-./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda-sdk --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm
+./configure --prefix=/home/xxx/ffmpegsdknvidia --enable-shared --enable-cuda-sdk --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm
 ```
 
 老版的sdk下载地址
@@ -1192,7 +1297,7 @@ ERROR: cuvid requested, but not all dependencies are satisfied: ffnvcodec
 即最后的命令为
 
 ```
-PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --enable-libx264
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/xxx/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --enable-libx264
 ```
 
 
@@ -1221,7 +1326,7 @@ avdevice		  avformat
 
 
 ```
-PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --enable-libx264 --enable-gpl
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/xxx/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree  --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --enable-libx264 --enable-gpl
 ```
 
 注意此时不需要设置libx264 ，源码安装的时候，已经将其安装到和ffnvcodec的同一个路径下了。
@@ -1231,14 +1336,14 @@ PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmp
 ```
 
 ```
-PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/ouyangy/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm --enable-libx264 --enable-gpl
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./configure --prefix=/home/xxx/ffmpegsdknvidia --enable-shared --enable-cuda  --enable-cuvid --enable-nvenc --enable-nonfree --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-x86asm --disable-doc --enable-small --disable-ffmpeg --disable-ffplay --disable-ffprobe  --disable-debug --disable-avdevice --disable-indevs --disable-outdevs --disable-avresample --disable-demuxers --enable-demuxer=aac --enable-demuxer=flv --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp4 --enable-demuxer=hls --enable-demuxer=avi --enable-demuxer=mpegts --enable-demuxer=hevc --enable-demuxer=matroska --disable-protocol=applehttp --enable-protocol=tcp --enable-protocol=udp --enable-protocol=file --enable-protocol=http --enable-protocol=hls --enable-protocol=rtmp --disable-decoders --enable-decoder=h264 --enable-decoder=h264_cuvid --enable-decoder=h264_qsv --enable-decoder=flv --enable-decoder=hevc --disable-encoders --enable-encoder=libx264 --enable-encoder=h264_nvenc --enable-encoder=h264_qsv --enable-encoder=libx265 --enable-encoder=flv --enable-parsers --disable-x86asm --enable-libx264 --enable-gpl
 ```
 
 调用动态库的时候，需要将相应的包的路径包含进去
 
 ```
 例如：
-export LD_LIBRARY_PATH=/home/ouyangy/videocode/x264sdk/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/home/xxx/videocode/x264sdk/lib:$LD_LIBRARY_PATH
 
 ```
 

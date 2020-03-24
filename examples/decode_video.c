@@ -126,7 +126,7 @@ static void decode(AVCodecContext *dec_ctx, AVFrame *frame, AVPacket *pkt,
         snprintf(buf, sizeof(buf), "%s-%d", filename, dec_ctx->frame_number);
         //原始函数保存图像帧
         //static void pgm_save(unsigned char *buf, int wrap, int xsize, int ysize,
-        char *filename)
+//        char *filename)
         pgm_save(frame->data[0], frame->linesize[0],
                  frame->width, frame->height, buf);
         
